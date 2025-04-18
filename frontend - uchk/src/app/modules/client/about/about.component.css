@@ -1,0 +1,13 @@
+main {
+    background: url("/assets/banners/img4-login.jpg") no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    background-color: rgba(0, 0, 0, 0.4);
+}

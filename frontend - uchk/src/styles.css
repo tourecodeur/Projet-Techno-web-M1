@@ -1,0 +1,123 @@
+/* You can add global styles to this file, and also import other style files */
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "primeicons/primeicons.css";
+@import "ngx-toastr/toastr";
+
+/* Google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+/* Variables root */
+:root {
+    --blue: #0b6aa9;
+    --blue-1: #3d90c8;
+    --green: #199847;
+    --marron: #cd7924;
+    --marron1: #e18528;
+    --white: #ffffff;
+    --black: #000000;
+    --gray: #f5f5f5;
+    --gray-dark: #333333;
+    --gray-light: #e5e5e5;
+    --gray-lighter: #f5f5f5;
+    --gray-lightest: #f5f5f5;
+    --red: #ff0000;
+    --yellow: #ffd700;
+    --orange: #ffa500;
+}
+
+body {
+    font-family: "Lato", serif;
+    font-optical-sizing: 16px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Poppins", serif;
+    font-optical-sizing: 16px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+p {
+    font-family: "Lexend", serif;
+    font-optical-sizing: 16px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Navbar styles */
+.navbar {
+    padding: 0 1rem;
+}
+
+.navbar .nav-item {
+    margin: 0 1.5rem;
+    padding: 0 0.5rem;
+}
+
+.navbar .navbar-nav .active {
+    border-bottom: 2px solid var(--blue-1);
+    outline-offset: -1px;
+    transition: all;
+}
+
+.navbar-nav .nav-link {
+    color: var(--blue-1);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.navbar .btn-nav button:first-child {
+    border: 1px solid var(--marron1);
+    color: var(--marron1);
+}
+
+.navbar .btn-nav button:last-child {
+    background-color: var(--marron1);
+    color: var(--white);
+}
+
+/* login register */
+.bg-card {
+    background-color: var(--marron);
+}
+
+.bg-button {
+    background-color: var(--white) !important;
+    border: none;
+    color: var(--marron) !important;
+    box-shadow: 0 0 2px var(--gray-light);
+}
+
+.icon-social {
+    background-color: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.icon-social i {
+    font-size: 1rem;
+    color: var(--marron);
+}
+.titre-primaire {
+    color: var(--marron);
+}
+
+.single-line-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}

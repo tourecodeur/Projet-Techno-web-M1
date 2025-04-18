@@ -1,0 +1,34 @@
+<header class="py-3 shadow">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <!-- <i class="pi pi-align-left"></i> -->
+                <a class="link-body-emphasis nav-link fw-bold">
+                    Dashboard
+                </a>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <div class="dropdown text-end">
+                    <a href="#" class="d-block link-body-emphasis nav-link dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+
+                        <span class="mx-2 fw-bold" *ngIf="infoUser">
+                            {{ infoUser.prenom }}  {{ infoUser.nom }} 
+                        </span>
+                    </a>
+                    
+                    <ul class="dropdown-menu text-small" >
+                        <li><a class="dropdown-item" routerLink="/">Notifications</a></li>
+                        <li><a class="dropdown-item" routerLink="/profil">Mon profil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" (click)="logout()" style="cursor: pointer;">Se Déconnecter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

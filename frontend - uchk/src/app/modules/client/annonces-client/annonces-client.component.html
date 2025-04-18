@@ -1,0 +1,129 @@
+<div class="container-fluid p-0 opacity-0.1">
+    <div class="banner position-relative text-center">
+        <img src="assets/banners/img3-login.png" class="img-fluid w-100" alt="Bannière Santé Mentale" />
+        <div class="banner-overlay position-absolute top-50 start-50 translate-middle text-white">
+            <h2 class="fw-bold text-center text-primary">
+                Listes des Annonces
+            </h2>
+            <p class="lead">
+                Trouvez les meilleurs annonces qui vous correspondent
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container my-4 py-3">
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm p-3">
+                    <h5 class="text-primary">Rechercher</h5>
+                    <input
+                        type="text"
+                        class="form-control mb-3"
+                        placeholder="Rechercher une annonce..."
+                    />
+
+                    <h5 class="text-primary mt-3">Filtres</h5>
+
+                    <!-- Filtre par catégorie -->
+                    <label class="form-label">Catégorie</label>
+                    <select class="form-select mb-3">
+                        <option value="">Toutes</option>
+                        <option value="emploi">Emploi</option>
+                        <option value="stage">Stage</option>
+                        <option value="freelance">Freelance</option>
+                    </select>
+
+                    <!-- Filtre par date -->
+                    <label class="form-label">Date de publication</label>
+                    <input type="date" class="form-control mb-3" />
+
+                    <!-- Bouton de filtrage -->
+                    <button class="btn btn-success w-100">Filtrer</button>
+                </div>
+            </div>
+
+            <!-- Liste des annonces -->
+            <div class="col-md-9">
+                <div class="row d-flex flex-column">
+                    <!-- Carte d'annonce 1 -->
+                    <div
+                        class="col-md-12 mb-4"
+                        *ngIf="annonces.length > 0; else noData"
+                    >
+                        <div
+                            class="card shadow-sm mb-3"
+                            *ngFor="let annonce of annonces"
+                        >
+                            <div
+                                class="card-body bg-light border-4 border-bottom border-success rounded d-flex flex-column p-4"
+                            >
+                                <div
+                                    class="d-flex justify-content-between align-items-center mb-2"
+                                >
+                                    <h5 class="card-title text-primary mb-2">
+                                        {{ annonce.titre }}
+                                    </h5>
+                                    <!-- <i class="bi bi-eye text-muted"></i> -->
+                                    <a
+                                        [routerLink]="[
+                                            '/detailAnnonce',
+                                            annonce.id
+                                        ]"
+                                        ><i class="bi bi-eye text-muted"></i
+                                    ></a>
+                                </div>
+                                <span
+                                    class="badge bg-card text-light position-absolute top-0 end-0 mt-2 me-2"
+                                    >{{ annonce.etat }}</span
+                                >
+                                <!-- <p class="text-muted mb-2">Description</p> -->
+                                <p
+                                    class="card-text"
+                                    style="text-align: justify"
+                                >
+                                    {{ annonce.description }}
+                                </p>
+                                <div
+                                    class="d-flex justify-content-between align-items-center mt-3"
+                                >
+                                    <div class="d-flex align-items-center">
+                                        <i
+                                            class="bi bi-calendar text-muted me-2"
+                                        ></i>
+                                        <small class="text-muted">{{
+                                            annonce.dateLimite
+                                        }}</small>
+                                    </div>
+                                    <a
+                                        [routerLink]="[
+                                            '/detailAnnonce',
+                                            annonce.id
+                                        ]"
+                                        class="btn btn-primary px-4"
+                                        >Voir plus</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template #noData>
+                            <p>Aucune annonce disponible pour le moment.</p>
+                        </ng-template>
+                    </div>
+                    <ng-template #noData>
+                        <p>Aucune annonce disponible pour le moment.</p>
+                    </ng-template>
+                </div>
+                <!-- Fin des annonces -->
+            </div>
+            <!-- Fin de la colonne des annonces -->
+        </div>
+    </div>
+</div>
+<div class="container">
+    <ng-template #noData>
+        <p>Aucune annonce disponible pour le moment.</p>
+    </ng-template>
+</div>

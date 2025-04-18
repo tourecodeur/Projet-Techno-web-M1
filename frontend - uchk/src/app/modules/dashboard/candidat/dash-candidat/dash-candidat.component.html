@@ -1,0 +1,116 @@
+<div class="row mt-3">
+    <div class="col-md-4">
+        <div class="card px-4 py-3 shadow border-0">
+            <span class="icon-number shadow">
+                <i class="bi bi-folder-fill"></i>
+            </span>
+            <h5 class="text-primary fw-medium">Candidatures</h5>
+            <span class="spanNumb">
+                {{tabCandidatures.length}}
+            </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card px-4 py-3 shadow border-0">
+            <span class="icon-number shadow">
+                <i class="bi bi-megaphone"></i>
+            </span>
+            <h5 class="text-primary fw-medium">Annonces</h5>
+            <span class="spanNumb">
+                0
+                <!-- {{tabAnnonces.length}} -->
+            </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card px-4 py-3 shadow border-0">
+            <span class="icon-number shadow">
+                <i class="bi bi-files"></i>
+            </span>
+            <h5 class="text-primary fw-medium">Mes documents</h5>
+            <span class="spanNumb">
+                {{tabDocuments.length}}
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div class="card px-4 py-3 shadow border-0">
+            <div class="d-flex justify-content-between align-items-center my-4">
+                <p class="fw-medium text-primary">Liste de mes candidatures</p>
+                <input type="text" class="form-control w-50" placeholder="Rechercher une candidature" (input)="searchCandidature($event)">
+            </div>
+
+            <hr class="my-0">
+
+            <table class="table table-striped mt-2">
+                <thead class="">
+                    <tr>
+                        <th class="text-primary">Annonce</th>
+                        <th class="text-primary">Structure</th>
+                        <th class="text-primary">Prénom</th>
+                        <th class="text-primary">Nom</th>
+                        <th class="text-primary">Etat</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (getPaginatedCandidature()) {
+                        <tr *ngFor="let candidature of getPaginatedCandidature()">
+                            <td>{{ candidature?.annonce?.titre }}</td>
+                            <td>{{ candidature?.annonce?.auteur }}</td>
+                            <td>{{ candidature?.user?.prenom }}</td>
+                            <td>{{ candidature?.user?.nom }}</td>
+                            <td [ngClass]="{
+                                'bg-warning text-white': candidature?.etat === 'PENDING',
+                                'bg-danger text-white': candidature?.etat === 'REJECTED',
+                                'bg-secondary text-white': candidature?.etat === 'CANCELLED',
+                                'bg-primary text-white': candidature?.etat === 'HIRED'
+                              }">
+                                {{
+                                    candidature?.etat === 'PENDING' ? 'En cours' :
+                                    candidature?.etat === 'REJECTED' ? 'Rejetée' :
+                                    candidature?.etat === 'CANCELLED' ? 'Annulée' :
+                                    candidature?.etat === 'HIRED' ? 'Recruté(e)' :
+                                    candidature?.etat
+                                }}
+                            </td>
+                        </tr>
+                    }
+                    @else {
+                        <p class="text-center text-primary my-4">
+                            Aucun administrateur disponible
+                        </p>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
+                            <a class="page-link" (click)="setPage(currentPage - 1)">&laquo;</a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [ngClass]="{'active': currentPage === (i + 1)}">
+                            <a class="page-link" (click)="setPage(i + 1)">{{ i + 1 }}</a>
+                        </li>
+                        <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages}">
+                            <a class="page-link" (click)="setPage(currentPage + 1)">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow p-3">
+            <h5 class="text-primary fw-medium mb-3">État des candidatures</h5>
+            <div style="position: relative; height:49vh; margin: 0 auto;">
+                <canvas id="candidatureChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

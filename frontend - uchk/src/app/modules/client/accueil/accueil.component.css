@@ -1,0 +1,70 @@
+.banner-section {
+    background-image: url("/assets/banners/img1-accueil.png");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner-section h2 span {
+    color: var(--marron1);
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.btn-postule {
+    background-color: var(--marron1);
+    color: var(--white);
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+
+.btn-postule a {
+    color: var(--white);
+}
+
+.btn-postule:hover {
+    background-color: var(--white);
+    color: var(--marron1);
+    transition: all 0.3s ease-in-out;
+    border: 1px solid var(--marron1);
+}
+
+.btn-postule:hover a {
+    color: var(--marron1);
+}
+
+.text-style {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--marron1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.banner-overlay {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    text-align: justify;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}

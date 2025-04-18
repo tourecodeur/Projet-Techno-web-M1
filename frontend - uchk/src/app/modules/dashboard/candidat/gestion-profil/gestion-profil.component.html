@@ -1,0 +1,66 @@
+
+<div class="card border-0 px-3 shadow">
+
+    <div class="mt-2 py-4">
+        <form action="" class="" [formGroup]="formUpdateCompte" (ngSubmit)="updateUserCompte()">
+            <div class="row gx-5">
+                <div class="col-md-4">
+                    <div class="">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img [src]="getImageUrl(userConnected)" alt="photoUserconnected" class="img-fluid shadow" style="width: 250px; height: 250px;">
+                        </div>
+                        <div class="mt-3">
+                            <label for="descriptionUpdate" class="form-label text-primary">Description</label>
+                            <textarea type="text" rows="4" class="form-control" id="descriptionUpdate" name="description" formControlName="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="prenomUpdate" class="form-label text-primary">Prénom</label>
+                                <input type="text" class="form-control" id="prenomUpdate" name="prenom" formControlName="prenom">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nomUpdate" class="form-label text-primary">Nom</label>
+                                <input type="text" class="form-control" id="nomUpdate" name="nom" formControlName="nom">
+                            </div>
+                            <div class="mb-3">
+                                <label for="adresseUpdate" class="form-label text-primary">Adresse</label>
+                                <input type="text" class="form-control" id="adresseUpdate" name="adresse" formControlName="adresse">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="emailUpdate" class="form-label text-primary">Email</label>
+                                <input type="email" class="form-control" id="emailUpdate" name="email" formControlName="email">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="telephoneUpdate" class="form-label text-primary">Téléphone</label>
+                                <input type="tel" class="form-control" id="telephoneUpdate" name="telephone" formControlName="telephone">
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <label for="photoProfilUpdate text-primary">Photo de profil </label>
+                                    <input
+                                        type="file"
+                                        class="form-control"
+                                        id="photoProfilUpdate"
+                                        (change)="onFileSelected($event)"
+                                        accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-primary disabled">Modifier</button>
+            </div>
+        </form>
+    </div>
+
+</div>

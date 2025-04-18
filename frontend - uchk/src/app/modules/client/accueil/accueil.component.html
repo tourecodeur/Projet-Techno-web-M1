@@ -1,0 +1,179 @@
+<section class="banner-section">
+    <div class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div
+                        class="banner-content text-start px-5"
+                        data-aos="fade-right"
+                        data-aos-duration="1000"
+                    >
+                        <h2 class="mb-3">
+                            Transformez votre savoir faire en
+                            <span class="text-style"> Succès ! </span>
+                        </h2>
+
+                        <p class="mb-5" style="font-size: 16px">
+                            Devenez tuteur à l'UNCHK et guidez les futurs
+                            talents vers l'excellence.
+                        </p>
+                        <button class="btn btn-postule">
+                            <a
+                                routerLink="/annonces"
+                                class="text-decoration-none"
+                            >
+                                Postuler à une annonce
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container py-2">
+    <h3 class="text-center text-primary fw-bold my-5 py-5">
+        Nos dernières Annonces
+    </h3>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3 class="text-primary py-3"></h3>
+        <a href="/annonces" class="btn btn-primary">Voir toutes les annonces</a>
+    </div>
+    <div class="row" *ngIf="annonces.length > 0">
+        <!-- Carte d'annonce (répéter pour plusieurs annonces) -->
+        <div class="col-md-6 mb-4" *ngFor="let annonce of annonces">
+            <div class="card shadow-sm mb-3">
+                <div
+                    class="card-body bg-light border-4 border-bottom border-success rounded d-flex flex-column p-4 p-3"
+                >
+                    <div
+                        class="d-flex justify-content-between align-items-center mb-2"
+                    >
+                        <div>
+                            <h5 class="card-title text-primary mb-2">
+                                {{ annonce.titre }}
+                            </h5>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3">
+                            <a [routerLink]="['/detailAnnonce', annonce.id]"
+                                ><i class="bi bi-eye text-muted"></i
+                            ></a>
+                        </div>
+                    </div>
+                    <!-- Badge Epingle en haut à droite -->
+                    <span
+                        class="badge bg-card text-light position-absolute top-0 end-0 mt-2 me-2"
+                        >{{ annonce.etat }}</span
+                    >
+                    <!-- <p class="text-muted mb-2">Description</p> -->
+                    <div class="flex-grow-1">
+                        <p class="card-text" style="text-align: justify">
+                            {{ annonce.description }}
+                        </p>
+                    </div>
+                    <div
+                        class="d-flex justify-content-between align-items-center mt-3"
+                    >
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-calendar text-muted me-2"></i>
+                            <small class="text-muted">{{
+                                annonce.dateLimite
+                            }}</small>
+                        </div>
+                        <!-- <a href="" class="btn btn-primary px-4">Voir plus</a> -->
+                        <a
+                            [routerLink]="['/detailAnnonce', annonce.id]"
+                            class="btn btn-primary px-4"
+                            >Voir plus</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-3">
+    <h3 class="text-center text-primary fw-bold my-3 py-3">
+        A propos de L’UNCHK
+    </h3>
+    <div class="row align-items-center mt-4">
+        <div class="col-md-6">
+            <p class="text-muted">
+                Lorem ipsum dolor sit amet consectetur. Consectetur nisl
+                tristique pellentesque tincidunt mauris nec imperdiet mauris.
+                Iaculis hendrerit facilisis id habitant sed senectus. Posuere et
+                sed amet eget massa risus id.
+            </p>
+            <p class="text-muted">
+                In gravida viverra morbi bibendum amet aliquam eget amet.
+                Penatibus adipiscing egestas magna pellentesque sit mi
+                pellentesque. Tincidunt nisl quam purus diam risus tempor
+                pharetra cursus. Turpis mauris lorem massa nec tempor ac
+                integer. Praesent viverra at placerat accumsan.
+            </p>
+            <a href="#" class="btn btn-primary">En savoir plus</a>
+        </div>
+        <div class="col-md-6 text-center">
+            <div class="border rounded p-3 shadow-sm">
+                <img
+                    src="/assets/banners/img3-login.png"
+                    alt="Université Numérique"
+                    class="img-fluid"
+                />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid position-relative py-5 my-5">
+    <div class="position-relative">
+        <!-- Image de fond -->
+        <img
+            src="/assets/banners/img2-login.png"
+            class="img-fluid w-100 h-100"
+            style="object-fit: cover; height: 350px"
+            alt="Rejoignez-nous"
+        />
+
+        <!-- Texte superposé -->
+        <div
+            class="position-absolute top-50 start-50 translate-middle text-white banner-overlay ps-4"
+        >
+            <h3 class="fw-bold">
+                Rejoignez notre plateforme de recrutement dédiée
+            </h3>
+            <p class="fs-5">
+                Devenez tuteur à l'UNCHK et guidez les futurs talents vers
+                l'excellence.
+            </p>
+        </div>
+    </div>
+    <div class="container-fluid py-5 bg-success">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-5">
+                    <p class="text-white">
+                        Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry dummy text of the printing.
+                    </p>
+                </div>
+                <div class="col-lg-7">
+                    <div class="position-relative mx-auto">
+                        <input
+                            class="form-control w-100 py-3 rounded"
+                            type="email"
+                            placeholder="Entrer votre adresse Email"
+                        />
+                        <button
+                            type="submit"
+                            class="btn btn-postule py-3 px-5 position-absolute rounded text-white h-100"
+                            style="top: 0; right: 0"
+                        >
+                            S'abonner
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

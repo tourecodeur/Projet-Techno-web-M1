@@ -1,0 +1,13 @@
+.banner {
+    height: 48vh;
+    overflow: hidden;
+}
+.banner img {
+    object-fit: cover;
+    height: 100%;
+}
+.banner-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+}

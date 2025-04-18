@@ -1,0 +1,154 @@
+<p class="fw-medium text-shadow mb-1">Gestion formats de documents</p>
+
+<div class="card px-3 shadow">
+    <div class="d-flex justify-content-between align-items-center my-4">
+        <button class="btn colorprimary" data-bs-toggle="modal" data-bs-target="#ajoutFormatDoc">
+            Ajouter un format
+        </button>
+
+        <input type="text" class="form-control w-50" placeholder="Rechercher un format de document" (input)="searchFormatDoc($event)">
+        <!--  -->
+    </div>
+
+    @if(isLoading){
+        <app-spinner />
+    }@else if(getPaginatedFormatDoc().length){
+        <table class="table table-striped mt-4">
+            <thead class="">
+                <tr>
+                    <th>#</th>
+                    <th>Nom format</th>
+                    <th>Description</th>
+                    <th>etat</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let formatDoc of getPaginatedFormatDoc()">
+                    <td>{{ formatDoc.id}}</td>
+                    <td>{{ formatDoc.nomFormat }}</td>
+                    <td>{{ formatDoc.description }}</td>
+                    <td [ngClass]="formatDoc.etat ? 'active-class' : 'inactive-class'">
+                        {{ formatDoc.etat ? 'Actif' : 'Inactif' }}
+                    </td>
+                    <td class="text-center d-flex justify-content-center align-items-center">
+                        <span><i class="pi pi-eye" data-bs-toggle="modal" data-bs-target="#detailFormatDoc" (click)="showdetailsFormatDoc(formatDoc.id)"></i></span>
+                        <span><i class="pi pi-pencil" data-bs-toggle="modal" data-bs-target="#modifierFormatDoc" (click)="preRemplirFormulaire(formatDoc.id)"></i></span>
+                        <span><i class="pi pi-trash" (click)="deleteFormatDoc(formatDoc.id)"></i></span>
+                    </td>
+                </tr>
+            </tbody>
+            
+        </table>
+    
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4 mb-3">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
+                        <a class="page-link" (click)="setPage(currentPage - 1)">&laquo;</a>
+                    </li>
+                    <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [ngClass]="{'active': currentPage === (i + 1)}">
+                        <a class="page-link" (click)="setPage(i + 1)">{{ i + 1 }}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages}">
+                        <a class="page-link" (click)="setPage(currentPage + 1)">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }@else {
+        <p class="text-center text-primary my-4">
+            Aucun format de document disponible
+        </p>
+    }
+   
+</div>
+
+<!-- Modal détail format Doc -->
+<div class="modal fade" id="detailFormatDoc" tabindex="-1" aria-labelledby="detailFormatDocLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="detailFormatDocLabel">Détail format document</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class=""><strong class="">Nom Format: </strong> {{selectedFormatDoc?.nomFormat}} </p>
+                <p class=""><strong class="">Description: </strong> {{selectedFormatDoc?.description}} </p>
+                <p class=""><strong class="">Etat: </strong> {{selectedFormatDoc?.etat}} </p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal d'ajout -->
+<div class="modal fade" id="ajoutFormatDoc" tabindex="-1" aria-labelledby="ajoutFormatDocLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="ajoutFormatDocLabel">Ajouter un Format</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formatDocForm" (ngSubmit)="addFormatDoc()">
+                    <div class="mb-3">
+                        <label for="nomFormat" class="form-label">Nom format</label>
+                        <input type="text" class="form-control" id="nomFormat" name="nomFormat" formControlName="nomFormat" placeholder="Nom format document">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" placeholder="Décrivez votre année académique" formControlName="description">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="etat" class="form-label">Etat</label>
+                        <input type="test" class="form-control" id="etat" name="etat" formControlName="etat">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-outline-primary" [disabled]="!formatDocForm.valid">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Modifier -->
+<div class="modal fade" id="modifierFormatDoc" tabindex="-1" aria-labelledby="modifierFormatDocLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="modifierFormatDocLabel">Modification format doc</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formatDocFormUpdate" (ngSubmit)="updateFormatDoc(selectedFormatDoc?.id)">
+                    <div class="mb-3">
+                        <label for="nomFormat" class="form-label">Nom format</label>
+                        <input type="text" class="form-control" id="nomFormat" formControlName="nomFormat" [value]="selectedFormatDoc?.nomFormat">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="description" formControlName="description" [value]="selectedFormatDoc?.description">
+                    </div>
+                    <div class="mb-3">
+                        <label for="etat" class="form-label">Etat</label>
+                        <input type="text" class="form-control" id="etat" formControlName="etat" [value]="selectedFormatDoc?.etat">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-outline-primary" [disabled]="formatDocFormUpdate.invalid">Modifier</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

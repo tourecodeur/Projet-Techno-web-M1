@@ -1,0 +1,273 @@
+<p class="fw-medium text-shadow mb-1">Mes documents</p>
+
+<div class="card border-0 px-3 shadow">
+
+    <div class="d-flex justify-content-between align-items-center my-4">
+        <button class="btn colorprimary" data-bs-toggle="modal" data-bs-target="#ajoutDocument">
+            Ajouter un document
+        </button>
+
+        <input type="text" class="form-control w-50" placeholder="Rechercher un document" (input)="searchDocuments($event)">
+    </div>
+
+    <div class="mt-2 mb-4">
+        <div class="row g-3">
+           @if(getPaginatedDocuments()){
+                <div class="col-12 col-md-6 col-lg-4" *ngFor="let document of getPaginatedDocuments()">
+                    <div class="card border-0 shadow">
+                        <div class="card-body position-relative">
+                            <span class="icon-doc">
+                                <i class="bi bi-file-earmark"></i>
+                            </span>
+                            <h5 class="card-title fw-medium">{{document.titre}}</h5>
+                            <p class="card-text single-line-text">{{document.description}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="badge bg-secondary">{{document.typeDocumentId}}</span>
+                                    <!-- <span class="badge bg-secondary">{{document.dateUpload}}</span> -->
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex gap-2 align-items-center icons-docs">
+                                    <span class="" data-bs-toggle="modal" data-bs-target="#detailsDoc" (click)="showdetailsDoc(document.id)">
+                                        <i class="pi pi-eye"></i>
+                                    </span>
+                                    <span class="" data-bs-toggle="modal" data-bs-target="#modifierDocument" (click)="preRemplirFormulaire(document.id)">
+                                        <i class="pi pi-pencil"></i>
+                                    </span>
+                                    <span class="">
+                                        <i class="pi pi-trash cursor-pointer"></i>
+                                    </span>
+                                </div>
+
+                                <button class="btn btn-sm btn-primary" (click)="downloadDocument(document.id)">
+                                    Télécharger
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           }
+           @else {
+                <div class="col-12">
+                    <p class="text-center">Aucun document trouvé.</p>
+                </div>
+           }
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-3">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
+                    <a class="page-link" (click)="setPage(currentPage - 1)">&laquo;</a>
+                </li>
+                <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [ngClass]="{'active': currentPage === (i + 1)}">
+                    <a class="page-link" (click)="setPage(i + 1)">{{ i + 1 }}</a>
+                </li>
+                <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages}">
+                    <a class="page-link" (click)="setPage(currentPage + 1)">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+<!-- Modal d'ajout document -->
+<div class="modal fade" id="ajoutDocument" tabindex="-1" aria-labelledby="ajoutDocumentLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="ajoutDocumentLabel">Ajouter un document</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="documentForm" (ngSubmit)="uploadDocument()">
+                    <div class="mb-3">
+                        <label for="titre" class="form-label">Titre</label>
+                        <input type="text" class="form-control" id="titre" name="titre" formControlName="titre" placeholder="titre du document">
+                        <div *ngIf="documentForm.get('titre')?.invalid && documentForm.get('titre')?.touched" class="text-danger">
+                            Le titre est requis
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" formControlName="description" placeholder="décrivez votre document">
+                        <div *ngIf="documentForm.get('description')?.invalid && documentForm.get('description')?.touched" class="text-danger">
+                            La description est requise
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="typeDocumentId" class="form-label">Type de document</label>
+                        <select class="form-select" formControlName="typeDocumentId" id="typeDocumentId">
+                            <option value="" disabled>Sélectionner un type de document</option>
+                            <option *ngFor="let typeDoc of typeDocuments" [value]="typeDoc.id">
+                                {{ typeDoc.nomType }}
+                            </option>
+                        </select>
+                        <div *ngIf="documentForm.get('typeDocumentId')?.invalid && documentForm.get('typeDocumentId')?.touched" class="text-danger">
+                            Le type de document est requis
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Fichier</label>
+                        <input type="file" class="form-control" name="file" (change)="onFileSelected($event)" />
+                        <small class="text-muted">Taille maximale: 15MB</small>
+                        <div *ngIf="!selectedFile && documentForm.get('file')?.touched" class="text-danger">
+                            Le fichier est requis
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="userId" name="userId" formControlName="userId">
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-outline-primary" [disabled]="!documentForm.valid || !selectedFile">
+                            Ajouter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal détails document -->
+<div class="modal fade" id="detailsDoc" tabindex="-1" aria-labelledby="detailsDocLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="detailsDocLabel">Détail du document</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <h4 class="text-center"> {{selectedDocument?.titre}} </h4>
+                    <br>
+                    <p class="text-justify">
+                        {{selectedDocument?.description}}
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <hr class="">
+                        <h6 class="text-center text-primary">Type de document</h6>
+                        <hr class="">
+
+                        <div class="">
+                            <p class="">
+                                <span class="">Nom: </span>
+                                {{selectedDocument?.typeDocument?.nomType}}
+                            </p>
+                            <p class="">
+                                <span class="">Description: </span>
+                                {{selectedDocument?.typeDocument?.description}}
+                            </p>
+                        </div>
+
+                        <hr class="">
+                        <h6 class="text-center text-primary">Infos propriétaire</h6>
+                        <hr class="">
+
+                        <div class="">
+                            <p class="">
+                                <span class="fw-medium">Nom: </span>
+                                {{selectedDocument?.user?.nom}}
+                            </p>
+                            <p class="">
+                                <span class="fw-medium">Prénom: </span>
+                                {{selectedDocument?.user?.prenom}}
+                            </p>
+                            <p class="">
+                                <span class="fw-medium">Email: </span>
+                                {{selectedDocument?.user?.email}}
+                            </p>
+                            <p class="">
+                                <span class="fw-medium">Téléphone: </span>
+                                {{selectedDocument?.user?.telephone}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 align-items-center">
+                        <div class="d-flex justify-content-center">
+                            <span class="icon-docDetails shadow">
+                                <i class="bi bi-file-earmark"></i>
+                            </span>
+                        </div>
+
+                        <div class="d-flex justify-content-center align-items-center mt-5">
+                            <button class="btn btn-sm btn-primary" (click)="downloadDocument(selectedDocument?.id)">
+                                Télécharger
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer mb-3">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal modifier document -->
+<div class="modal fade" id="modifierDocument" tabindex="-1" aria-labelledby="modifierDocumentLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="modifierDocumentLabel">Modification du document</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="documentFormUpdate" (ngSubmit)="updateDocument()">
+                    <div class="mb-3">
+                        <label for="titre" class="form-label">Titre</label>
+                        <input type="text" class="form-control" id="titre" name="titre" formControlName="titre" [value]="selectedDocument?.titre">
+                        <div *ngIf="documentForm.get('titre')?.invalid && documentForm.get('titre')?.touched" class="text-danger">
+                            Le titre est requis
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" formControlName="description" [value]="selectedDocument?.description">
+                        <div *ngIf="documentForm.get('description')?.invalid && documentForm.get('description')?.touched" class="text-danger">
+                            La description est requise
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="typeDocumentId" class="form-label">Type de document</label>
+                        <select class="form-select" formControlName="typeDocumentId" id="typeDocumentId">
+                            <option value="" disabled>Sélectionner un type de document</option>
+                            <option *ngFor="let typeDoc of typeDocuments" [value]="typeDoc.id" [selected]="typeDoc.id === selectedDocument?.typeDocument?.id">
+                                {{ typeDoc.nomType }}
+                            </option>
+                        </select>
+                        <div *ngIf="documentForm.get('typeDocumentId')?.invalid && documentForm.get('typeDocumentId')?.touched" class="text-danger">
+                            Le type de document est requis
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Fichier (optionnel)</label>
+                        <input type="file" class="form-control" name="file" (change)="onFileSelected($event)" />
+                        <small class="text-muted">Taille maximale: 15MB</small>
+                    </div>
+
+                    <input type="hidden" id="userId" formControlName="userId">
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-outline-primary" [disabled]="documentFormUpdate.invalid">
+                            Modifier
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+<header>
+    <div>
+        <h2 class="fw-bold">Détails des annonces</h2>
+    </div>
+</header>
+<div class="container my-5">
+    <div class="row g-4" *ngIf="annonce">
+        <!-- Carte principale -->
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <h4 class="fw-bold text-primary">{{ annonce.titre }}</h4>
+                <p class="text-muted">
+                    {{ annonce.description }}
+                </p>
+                <p class="text-muted">
+                    {{ annonce.contenu }}
+                </p>
+                <p class="fw-bold text-danger">
+                    <i class="bi bi-calendar me-2"></i>Exprie le :
+                    <span class="text-primary">{{ annonce.dateLimite }}</span>
+                </p>
+                <!-- Bouton "Postuler" pour les candidats connectés -->
+                <button
+                    class="btn btn-postule w-100"
+                    *ngIf="isLoggedIn && isCandidat"
+                    (click)="goToDashboard()"
+                >
+                    <a class="text-decoration-none">Postuler</a>
+                </button>
+
+                <!-- Bouton "Se connecter pour postuler" pour les utilisateurs non connectés -->
+                <button
+                    *ngIf="!isLoggedIn"
+                    class="btn btn-postule w-100"
+                    (click)="goToLogin()"
+                >
+                    <a class="text-decoration-none"
+                        >Se connecter pour postuler</a
+                    >
+                </button>
+            </div>
+        </div>
+
+        <!-- Carte secondaire -->
+        <div class="col-md-4 shadow-sm">
+            <div class="card p-2">
+                <div
+                    class="card-bodyborder-4 border-bottom border-success rounded"
+                >
+                    <div
+                        class="card-body bg-light d-flex flex-column p-2 border-4 border-bottom border-success rounded"
+                    >
+                        <div
+                            class="d-flex justify-content-between align-items-center"
+                        >
+                            <h5 class="card-title fw-bold text-card">
+                                Informations Requis
+                            </h5>
+                        </div>
+                        <div>
+                            <div
+                                class="d-flex justify-content-between align-items-center"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <i
+                                        class="bi bi-check text-primary fw-bold fs-2"
+                                    ></i>
+                                    <small class="text-bold"
+                                        >Prénom & Nom</small
+                                    >
+                                </div>
+                            </div>
+                            <div
+                                class="d-flex justify-content-between align-items-center"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <i
+                                        class="bi bi-check text-primary fw-bold fs-2"
+                                    ></i>
+                                    <small class="text-bold">Addresse</small>
+                                </div>
+                            </div>
+                            <div
+                                class="d-flex justify-content-between align-items-center"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <i
+                                        class="bi bi-check text-primary fw-bold fs-2"
+                                    ></i>
+                                    <small class="text-bold">Téléphone</small>
+                                </div>
+                            </div>
+                            <div
+                                class="d-flex justify-content-between align-items-center"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <i
+                                        class="bi bi-check text-primary fw-bold fs-2"
+                                    ></i>
+                                    <small class="text-bold">Email</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="d-flex justify-content-between align-items-center"
+                        >
+                            <h5 class="card-title text-card fw-bold mt-2">
+                                Fichiers Requis
+                            </h5>
+                        </div>
+                        <div>
+                            <div
+                                class="d-flex justify-content-between align-items-center"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <i
+                                        class="bi bi-check text-primary fw-bold fs-2"
+                                    ></i>
+                                    <small class="text-bold"
+                                        >CV - Curriculum Vitae(PDF,
+                                        URL..)</small
+                                    >
+                                </div>
+                            </div>
+                            <div
+                                class="d-flex justify-content-between align-items-center"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <i
+                                        class="bi bi-check text-primary fw-bold fs-2"
+                                    ></i>
+                                    <small class="text-bold"
+                                        >Dîplome ou Attestation(PDF, JPG,
+                                        PNG)</small
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

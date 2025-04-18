@@ -1,0 +1,82 @@
+.colorprimary{
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+thead th {
+    color: var(--blue);
+}
+
+tbody td span{
+    width: 30px;
+    height: 30px;
+    padding: 6px;
+    border-radius: 50%;
+    background-color: var(--blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+}
+
+tbody td span i{
+    color: var(--white);
+    font-size: 14px;
+}
+
+.pagination a{
+    cursor: pointer;
+}
+
+.icon-doc{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 0.5px solid blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.icon-doc i{
+    font-size: 25px;
+    color: blue;
+}
+
+.icons-docs span{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 0.5px solid blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.icons-docs i{
+    cursor: pointer;
+    color: blue;
+}
+
+.icon-docDetails{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 0.5px solid blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.icon-docDetails i{
+    font-size: 100px;
+    color: blue;
+}

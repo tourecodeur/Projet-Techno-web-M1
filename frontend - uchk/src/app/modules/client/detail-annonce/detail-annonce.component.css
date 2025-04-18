@@ -1,0 +1,38 @@
+header {
+    background: url("/assets/banners/img3-login.png") no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+header div {
+    padding: 4rem;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+}
+.text-card {
+    color: var(--marron1);
+}
+.btn-postule {
+    background-color: var(--marron1);
+    color: var(--white);
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+
+.btn-postule a {
+    color: var(--white);
+}
+
+.btn-postule:hover {
+    background-color: var(--white);
+    color: var(--marron1);
+    transition: all 0.3s ease-in-out;
+    border: 1px solid var(--marron1);
+}

@@ -1,0 +1,16 @@
+main {
+    background: url("/assets/banners/img4-login.jpg") no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+main div h1 {
+    font-size: 60px;
+}
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 45vh;
+    background-color: rgba(0, 0, 0, 0.4);
+}

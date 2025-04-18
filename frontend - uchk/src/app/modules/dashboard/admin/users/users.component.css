@@ -1,0 +1,23 @@
+.iconUsers span i{
+    color: blue;
+    font-size: 25px;
+}
+
+.iconNumber{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #1879BC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconNumber strong{
+    color: white;
+    font-size: 20px;
+}
+
+.carteUser{
+    cursor: pointer;
+}

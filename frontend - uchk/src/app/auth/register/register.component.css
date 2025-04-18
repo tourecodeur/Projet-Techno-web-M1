@@ -1,0 +1,11 @@
+.register{
+    background-image: url('/assets/banners/img4-login.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.register .card{
+    background-color: #3d90c8e5;
+}

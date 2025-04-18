@@ -1,0 +1,57 @@
+<section class="my-3">
+    <div class="row gx-4">
+        <div class="col-md-6 position-relative carteUser">
+            <div class="card px-3 py-2 shadow border-0"  (click)="afficherCandidats()">
+                <div class="d-flex justify-content-between align-iems-center">
+                    <h5 class="">Candidats</h5>
+                    <div class="iconUsers">
+                        <span>
+                            <i class="bi bi-people"></i>
+                        </span>
+                    </div>
+                </div>
+                <span class="me-2 iconNumber" *ngIf="tabCandidats">
+                    <strong>{{tabCandidats.length}}</strong>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6 position-relative carteUser">
+            <div class="card px-3 py-2 shadow border-0" (click)="afficherAdmins()">
+                <div class="d-flex justify-content-between align-iems-center">
+                    <h5 class="">Admins</h5>
+                    <div class="iconUsers">
+                        <span>
+                            <i class="bi bi-people"></i>
+                        </span>
+                    </div>
+                </div>
+                <span class="me-2 iconNumber" *ngIf="tabAdmins">
+                    <strong>{{tabAdmins.length}}</strong>
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card px-3 shadow border-0">
+                <div *ngIf="!afficherAdmin">
+                    <app-gestion-candidat></app-gestion-candidat>
+                </div>
+                <div *ngIf="afficherAdmin">
+                    <app-gestion-admin></app-gestion-admin>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow p-3 h-100">
+                <h5 class="text-primary fw-medium mb-3">Roles des utilisateurs</h5>
+                <div class="chart-container w-100" style="position: relative; height:49vh; margin: 0 auto;">
+                    <canvas id="candidatureChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

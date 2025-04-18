@@ -1,0 +1,7 @@
+header{
+    border-bottom: 2px solid var(--blue-1) !important;
+}
+
+header .link-body-emphasis{
+    color: var(--blue-1) !important;
+}

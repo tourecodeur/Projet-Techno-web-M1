@@ -1,0 +1,79 @@
+<div class="container-fluid d-flex align-items-center justify-content-center register" style="height: 100vh;">
+    <div class="row w-100" data-aos="fade-up" data-aos-duration="1000">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center my-4 text-light fw-bold">Créez vous un compte</h5>
+
+                    <form [formGroup]="registerForm" (ngSubmit)="inscriptionForm()" class="mt-4">
+                        <div class="row">
+                            <div class="col-md-6 text-light">
+                                <div class="mb-3">
+                                    <label for="prenom" class="form-label">Prénom: </label>
+                                    <input type="text" class="form-control" id="prenom" formControlName="prenom" placeholder="Entrez votre prénom">
+                                    <div *ngIf="registerForm.get('prenom')?.touched && registerForm.get('prenom')?.invalid" class="text-white">
+                                        <small *ngIf="registerForm.get('prenom')?.errors?.['required']">Le prénom est requis</small>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nom" class="form-label">Nom: </label>
+                                    <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Entrez votre nom">
+                                    <div *ngIf="registerForm.get('nom')?.touched && registerForm.get('nom')?.invalid" class="text-white">
+                                        <small *ngIf="registerForm.get('nom')?.errors?.['required']">Le nom est requis</small>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="adresse" class="form-label">Adresse: </label>
+                                    <input type="text" class="form-control" id="adresse" formControlName="adresse" placeholder="Entrez votre adresse">
+                                    <div *ngIf="registerForm.get('adresse')?.touched && registerForm.get('adresse')?.invalid" class="text-white">
+                                        <small *ngIf="registerForm.get('adresse')?.errors?.['required']">L'adresse est requise</small>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="telephone" class="form-label">Telephone: </label>
+                                    <input type="tel" class="form-control" id="telephone" formControlName="telephone" placeholder="Entrez votre numéro de telephone">
+                                    <div *ngIf="registerForm.get('telephone')?.touched && registerForm.get('telephone')?.invalid" class="text-white">
+                                        <small *ngIf="registerForm.get('telephone')?.errors?.['required']">Le numéro de telephone est requis</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-light">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email: </label>
+                                    <input type="email" class="form-control" id="email" formControlName="email" placeholder="Entrez votre email">
+                                    <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid" class="text-white">
+                                        <small *ngIf="registerForm.get('email')?.errors?.['required']">L'email est requis</small>
+                                        <small *ngIf="registerForm.get('email')?.errors?.['email']">Format d'email invalide</small>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Mot de passe: </label>
+                                    <input type="password" class="form-control" id="password" formControlName="password" placeholder="Entrez votre mot de passe">
+                                    <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid" class="text-white">
+                                        <small *ngIf="registerForm.get('password')?.errors?.['required']">Le mot de passe est requis</small>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="photoProfil" class="form-label">Photo: </label>
+                                    <input type="file" class="form-control" id="photoProfil" formControlName="photoProfil">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description: </label>
+                                    <input type="description" class="form-control" id="description" formControlName="description" placeholder="Décrivez-vous">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn bg-button w-100 mt-3 mb-2 fw-bold" [disabled]="registerForm.invalid">S'inscrire</button>
+
+                        <span class="text-center my-2 d-block">
+                            <a routerLink="/login" class="nav-link text-light fw-bold">
+                                Vous avez déja un compte ? <span class="fw-bold text-connect"> Connectez-vous!</span>
+                            </a>
+                        </span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

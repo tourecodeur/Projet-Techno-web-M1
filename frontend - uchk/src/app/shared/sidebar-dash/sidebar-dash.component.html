@@ -1,0 +1,51 @@
+<div class="sidebar d-flex flex-column flex-shrink-0 p-3 h-100">
+    <a href="/" class="d-flex align-items-center mx-auto mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <!-- <svg class="bi pe-none me-2" width="40" height="32">
+            <use xlink:href="#bootstrap"></use>
+        </svg> -->
+        <span class="fs-5 fw-bold">UNCHK</span>
+    </a>
+    <hr class="text-white">
+    <ul class="nav nav-pills flex-column mb-auto">
+        @for (menu of MenuItems; track $index) {
+        <li class="nav-item my-2">
+            @if (menu.children) {
+                <div class="dropdown">
+                    <a class="nav-link text-white outline dropdown-toggle" 
+                       data-bs-toggle="collapse" 
+                       [attr.data-bs-target]="'#menu-' + $index" 
+                       aria-expanded="false">
+                        <i class="me-3" [class]="menu.icon"></i>
+                        <span>{{ menu.title }}</span>
+                    </a>
+                    <ul class="collapse ms-4" [id]="'menu-' + $index">
+                        @for (submenu of menu.children; track $index) {
+                            <li class="nav-item my-2">
+                                <a class="nav-link text-white outline" 
+                                   [routerLink]="submenu.route"
+                                   routerLinkActive="ActiveMenu">
+                                    <i class="me-3" [class]="submenu.icon"></i>
+                                    <span>{{ submenu.title }}</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            } @else {
+                <a class="nav-link text-white outline" 
+                   [routerLink]="menu.route"
+                   routerLinkActive="ActiveMenu" 
+                   [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="me-3" [class]="menu.icon"></i>
+                    <span>{{ menu.title }}</span>
+                </a>
+            }
+        </li>
+        }
+    </ul>
+    <hr class="text-white">
+    <button class="btn btn-outline text-white" (click)="logout()">
+        <i class="pi pi-sign-out text-pointer me-2"></i>
+        Se déconnecter
+    </button>
+</div>

@@ -1,0 +1,74 @@
+<div class="login container-fluid d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="row w-100" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
+        <div class="col-md-8 mx-auto">
+            <div class="shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 p-0 m-0">
+                            <div class="card rounded-0 px-4 py-3 bg-card-login text-white h-100 d-flex flex-direction-column justify-content-center position-relative">
+                                <span class="iconHome shadow" routerLink="/">
+                                    <i class="bi bi-house-fill"></i>
+                                </span>
+                                <h5 class="card-title text-center fw-bold mb-5 mt-3">Connectez-vous</h5>
+                                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-4">
+                                    <div class="mb-4">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                                            <input type="email" class="form-control" formControlName="email" placeholder="Votre adresse email">
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-person-fill-lock"></i></span>
+                                            <input type="password"
+                                                   class="form-control"
+                                                   formControlName="password"
+                                                   placeholder="Votre mot de passe">
+                                        </div>
+                                    </div>
+
+                                    <p class="my-2"><a routerLink="/forgot-password" class="text-white nav-link">Mot de passe oublié ?</a></p>
+
+                                    <div class="d-flex justify-content-center mb-3 mt-4">
+                                        <button type="submit" class="btn bg-button fw-bold px-5"
+                                            [disabled]="loginForm.invalid">
+                                            Se connecter
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <div class="d-flex justify-content-center align-items-center mt-3">
+                                        <span class="me-3 p-2 icon-social">
+                                            <a href="" class="text-white">
+                                                <i class="bi bi-facebook"></i>
+                                            </a>
+                                        </span>
+                                        <span class="me-3 p-2 icon-social">
+                                            <a href="" class="text-white">
+                                                <i class="bi bi-google"></i>
+                                            </a>
+                                        </span>
+                                        <span class="me-3 p-2 icon-social">
+                                            <a href="" class="text-white">
+                                                <i class="bi bi-linkedin"></i>
+                                            </a>
+                                        </span>
+                                </div>
+
+                                <p class="text-center mt-4">
+                                        <a routerLink="/register" class="nav-link">
+                                            Vous n'avez pas de compte? <span class="fw-bold">Inscrivez-vous !</span>
+                                        </a>
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 border p-0 m-0">
+                            <img src="/assets/auth/user-auth.png" alt="" class="img-fluid h-100 w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

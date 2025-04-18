@@ -1,0 +1,243 @@
+<div class="d-flex justify-content-between align-items-center my-4">
+    <button class="btn colorprimary" data-bs-toggle="modal" data-bs-target="#ajoutCandidat">
+        Ajouter un candidat
+    </button>
+
+    <input type="text" class="form-control w-50" placeholder="Rechercher un candidat" (input)="searchCandidat($event)">
+</div>
+
+@if (getPaginatedCandidats().length) {
+    <table class="table table-striped mt-2">
+        <thead class="">
+            <tr>
+                <th>Photo</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <!-- <th>Etat</th> -->
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let candidat of getPaginatedCandidats()">
+                <td>
+                    <img [src]="getImageUrl(candidat)"
+                        [alt]="candidat.nom + ' ' + candidat.prenom"
+                        class="img-thumbnail"
+                        style="width: 30px; height: 30px;"
+                    >
+                </td>
+                <td>{{ candidat.prenom }}</td>
+                <td>{{ candidat.email }}</td>
+                <td>{{ candidat.telephone }}</td>
+                <!-- <td [ngClass]="candidat.etat ? 'active-class' : 'inactive-class'">
+                    {{ candidat.etat ? 'Active' : 'Désactivée' }}
+                </td> -->
+                <td class="text-center d-flex justify-content-center align-items-center">
+                    <span><i class="pi pi-eye" data-bs-toggle="modal" data-bs-target="#detailsCandidat" (click)="showdetailsCandidat(candidat.id)"></i></span>
+                    <span><i class="pi pi-pencil" data-bs-toggle="modal" data-bs-target="#modifierCandidat" (click)="preRemplirFormulaire(candidat.id)"></i></span>
+                    <span><i class="pi pi-trash" (click)="deleteCandidat(candidat.id)"></i></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4 mb-3">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
+                    <a class="page-link" (click)="setPage(currentPage - 1)">&laquo;</a>
+                </li>
+                <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [ngClass]="{'active': currentPage === (i + 1)}">
+                    <a class="page-link" (click)="setPage(i + 1)">{{ i + 1 }}</a>
+                </li>
+                <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages}">
+                    <a class="page-link" (click)="setPage(currentPage + 1)">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}@else {
+    <p class="text-center text-primary my-4">
+        Aucun candidat disponible
+    </p>
+}
+
+
+
+<!-- Modal d'ajout -->
+<div class="modal fade" id="ajoutCandidat" tabindex="-1" aria-labelledby="ajoutCandidat">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ajoutCandidat">Ajouter un candidat</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="candidatFormAdd" (ngSubmit)="addCandidat()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="prenom" class="form-label">Prénom</label>
+                                <input type="text" class="form-control" id="prenom" name="prenom" formControlName="prenom">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nom" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="nom" name="nom" formControlName="nom">
+                            </div>
+                            <div class="mb-3">
+                                <label for="adresse" class="form-label">Adresse</label>
+                                <input type="text" class="form-control" id="adresse" name="adresse" formControlName="adresse">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" formControlName="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Mot de passe </label>
+                                <input type="password" class="form-control" id="password" name="password" formControlName="password">
+                            </div>
+                            <div class="mb-3">
+                                <label for="telephone" class="form-label">Téléphone</label>
+                                <input type="tel" class="form-control" id="telephone" name="telephone" formControlName="telephone">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label for="photoProfil">Photo de profil</label>
+                            <input
+                                type="file"
+                                class="form-control"
+                                id="photoProfil"
+                                (change)="onFileSelected($event)"
+                                accept="image/*">
+                            <small class="form-text text-muted">Format accepté : JPG, PNG, GIF (max 5MB)</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea type="text" class="form-control" id="description" name="description" placeholder="Décrivez votre année académique" formControlName="description"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-outline-primary" [disabled]="!candidatFormAdd.valid">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal détails Candidat -->
+<div class="modal fade" id="detailsCandidat" tabindex="-1" aria-labelledby="detailsCandidat">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="detailsCandidat">Détails du candidat</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <img [src]="getImageUrl(selectedCandidat)" 
+                         [alt]="selectedCandidat?.nom + ' ' + selectedCandidat?.prenom"
+                         class="img-fluid rounded-circle shadow"
+                         style="width: 150px; height: 150px; object-fit: cover;">
+                    <h4 class="mt-4">{{selectedCandidat?.prenom}} {{selectedCandidat?.nom}}</h4>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong class="text-primary fw-medium">Email:</strong> {{selectedCandidat?.email}}</p>
+                        <p><strong class="text-primary fw-medium">Téléphone:</strong> {{selectedCandidat?.telephone}}</p>
+                        <p><strong class="text-primary fw-medium">Adresse:</strong> {{selectedCandidat?.adresse}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong class="text-primary fw-medium">Description:</strong></p>
+                        <p class="text-muted">{{selectedCandidat?.description}}</p>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Modifier -->
+<div class="modal fade" id="modifierCandidat" tabindex="-1" aria-labelledby="modifierCandidat">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modifierCandidat">Modification d' un candidat</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="candidatFormUpdate" (ngSubmit)="updateCandidat(selectedCandidat?.id)">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="prenomUpdate" class="form-label">Prénom</label>
+                                <input type="text" class="form-control" id="prenomUpdate" name="prenom" formControlName="prenom" [value]="selectedCandidat?.prenom">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nomUpdate" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="nomUpdate" name="nom" formControlName="nom" [value]="selectedCandidat?.nom">
+                            </div>
+                            <div class="mb-3">
+                                <label for="adresseUpdate" class="form-label">Adresse</label>
+                                <input type="text" class="form-control" id="adresseUpdate" name="adresse" formControlName="adresse" [value]="selectedCandidat?.adresse">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="emailUpdate" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="emailUpdate" name="email" formControlName="email" [value]="selectedCandidat?.email">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="telephoneUpdate" class="form-label">Téléphone</label>
+                                <input type="tel" class="form-control" id="telephoneUpdate" name="telephone" formControlName="telephone" [value]="selectedCandidat?.telephone">
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <label for="photoProfilUpdate">Photo de profil </label>
+                                    <!-- Afficher l'image actuelle si elle existe -->
+                                    <img *ngIf="selectedCandidat"
+                                         [src]="getImageUrl(selectedCandidat)"
+                                         alt="Photo de profil actuelle"
+                                         class="img-thumbnail mb-2 mx-3"
+                                         style="max-width: 150px">
+                                    <input
+                                        type="file"
+                                        class="form-control"
+                                        id="photoProfilUpdate"
+                                        (change)="onFileSelected($event)"
+                                        accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descriptionUpdate" class="form-label">Description</label>
+                        <textarea type="text" class="form-control" id="descriptionUpdate" name="description" formControlName="description" [value]="selectedCandidat?.description"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-outline-primary" [disabled]="candidatFormUpdate.invalid">Modifier</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

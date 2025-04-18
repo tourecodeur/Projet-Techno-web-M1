@@ -1,0 +1,269 @@
+<!-- <p class="fw-medium text-shadow">Gestion des annonces</p> -->
+
+<div class="card px-3 shadow">
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ajoutAnnonce">
+            Publlier une annonce
+        </button>
+
+        <input type="text" class="form-control w-50" placeholder="Rechercher une annonce" (input)="searchAnnonce($event)">
+    </div>
+
+    <div class="mt-2">
+        <div class="row g-3">
+            @if(isLoading){
+                <app-spinner />
+            }@else if(getPaginatedAnnonces().length){
+                <div class="col-md-6" *ngFor="let annonce of getPaginatedAnnonces()">
+                    <div class="card px-2">
+                        <div class="etatAnnonce" [ngClass]="annonce.etat === 'En cours' ? 'bg-warning' : 'bg-primary'">
+                            <span >{{annonce.etat}}</span>
+                        </div>
+                        <div class="mt-3">
+                            <h4 class="fw-bold text-primary">
+                                {{ annonce.titre }}
+                            </h4>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p>
+                                    description
+                                </p>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <span class="" data-bs-toggle="modal" data-bs-target="#detailsAnnonce" (click)="showdetailsAnnonce(annonce)">
+                                        <i class="pi pi-eye text-primary iconsAnnonce"></i>
+                                    </span>
+                                    <span class="" data-bs-toggle="modal" data-bs-target="#modifierAnnonce" (click)="preRemplirFormulaire(annonce?.id)">
+                                        <i class="pi pi-pencil text-primary iconsAnnonce"></i>
+                                    </span>
+                                    <span class="">
+                                        <i class="pi pi-trash text-primary iconsAnnonce"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="mb-3 single-line-text">
+                            {{annonce.description}}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="">
+                                <span class="">
+                                    <i class="pi pi-clock"></i>
+                                </span>
+                                <span class="fw-bold">
+                                    {{annonce.created_at | date : 'dd/MM/yyyy'}}
+                                </span>
+                            </div>
+
+                            <div class="">
+                                <span class="fw-bold">
+                                    {{annonce.dateLimite | date : 'dd/MM/yyyy'}}
+                                </span>
+                                <span class="">
+                                    <i class="pi pi-clock"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }@else {
+                <p class="text-center my-2 text-primary">
+                    Aucune annonce disponible pour l'instant
+                </p>
+            }
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-3">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
+                    <a class="page-link" (click)="setPage(currentPage - 1)">&laquo;</a>
+                </li>
+                <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [ngClass]="{'active': currentPage === (i + 1)}">
+                    <a class="page-link" (click)="setPage(i + 1)">{{ i + 1 }}</a>
+                </li>
+                <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages}">
+                    <a class="page-link" (click)="setPage(currentPage + 1)">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<!-- Modal d'ajout annonce -->
+<div class="modal fade" id="ajoutAnnonce" tabindex="-1" aria-labelledby="ajoutAnnonceLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="ajoutAnnonceLabel">Ajouter une annonce</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="annonceFormAdd" (ngSubmit)="addAnnonce()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="titre" class="form-label text-primary">Titre</label>
+                                <input type="text" class="form-control" id="titre" name="titre" formControlName="titre">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label text-primary">Description</label>
+                                <input type="text" class="form-control" id="description" name="description" formControlName="description">
+                            </div>
+                            <div class="mb-3">
+                                <label for="idAnneeAnnonce" class="form-label text-primary">Année académique</label>
+                                <select class="form-select" formControlName="idAnneeAnnonce" id="idAnneeAnnonce" aria-label="Default select example">
+                                    <option disabled selected>Sélectionner une année académique</option>
+                                    <option *ngFor="let annee of tabAnneeAcademiques" [value]="annee.id">{{ annee.annee }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="imageAnnonce" class="form-label text-primary">Image</label>
+                                <input type="file"
+                                    class="form-control"
+                                    id="imageAnnonce"
+                                    name="imageAnnonce"
+                                    (change)="onFileSelected($event)"
+                                    accept="image/*"
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <label for="auteur" class="form-label text-primary">Auteur</label>
+                                <input type="text" class="form-control" id="auteur" name="auteur" formControlName="auteur">
+                            </div>
+                            <div class="mb-3">
+                                <label for="debut" class="form-label text-primary">Date de cloture</label>
+                                <input type="date" class="form-control" id="debut" name="debut" formControlName="date_limite">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="contenu" class="form-label text-primary">Contenu</label>
+                        <textarea class="form-control" name="contenu" id="contenu" cols="30" rows="8" formControlName="contenu"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-outline-primary" [disabled]="!annonceFormAdd.valid">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal détail annonce -->
+<div class="modal fade" id="detailsAnnonce" tabindex="-1" aria-labelledby="detailsAnnonceLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="detailsAnnonceLabel">Détails de l'annonce</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <h3 class="text-center text-primary fw-medium">{{selectedAnnonce?.titre}}</h3>
+                    <p class="my-2">{{selectedAnnonce?.description}}</p>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-8">
+                        <h4 class="mb-5 text-primary">Contenu de l'annonce</h4>
+                        <p class="text-justify mb-3">
+                            {{selectedAnnonce?.contenu}}
+                        </p>
+                    </div>
+                    <div class="col-4">
+                        <img [src]="getImageUrl(selectedAnnonce)"
+                            [alt]="selectedAnnonce.titre"
+                            class="img-thumbnail"
+                        >
+
+                        <div class="">
+                            <p><strong class="text-primary fw-bold">Auteur:</strong>  {{selectedAnnonce?.auteur}}</p>
+                            <p><strong class="text-primary fw-bold"> Année de l'annonce :</strong> {{ selectedAnnonce.anneeAcademique?.annee }}</p>
+                            <p><strong class="text-primary fw-bold">Crée le:</strong>  {{selectedAnnonce?.created_at | date: 'dd/MM/yyyy'}}</p>
+                            <p><strong class="text-primary fw-bold">Date cloture:</strong>  {{selectedAnnonce?.dateLimite | date: 'dd/MM/yyyy'}}</p>
+                            <p><strong class="text-primary fw-bold">État:</strong>  {{selectedAnnonce?.etat}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modifier annonce -->
+<div class="modal fade" id="modifierAnnonce" tabindex="-1" aria-labelledby="modifierAnnonceLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="modifierAnnonceLabel">Modification de l'annonce</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="annonceFormUpdate" (ngSubmit)="updateAnnonce(selectedAnnonce?.id)">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="titre" class="form-label text-primary">Titre</label>
+                                <input type="text" class="form-control" id="titre" name="titre" formControlName="titre">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label text-primary">Description</label>
+                                <input type="text" class="form-control" id="description" name="description" formControlName="description">
+                            </div>
+                            <div class="mb-3">
+                                <label for="idAnneeAnnonce" class="form-label text-primary">Année académique</label>
+                                <select class="form-select" formControlName="idAnneeAnnonce" id="idAnneeAnnonce" aria-label="Default select example">
+                                    <option disabled>Sélectionner une année académique</option>
+                                    <option *ngFor="let annee of tabAnneeAcademiques"
+                                            [value]="annee.id"
+                                            [selected]="annee.id === selectedAnnonce?.anneeAcademique?.id">
+                                        {{ annee.annee }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="image" class="form-label text-primary">Image</label>
+                                <input type="file" class="form-control" id="image" name="image" (change)="onFileSelected($event)">
+                            </div>
+                            <div class="mb-3">
+                                <label for="auteur" class="form-label text-primary">Auteur</label>
+                                <input type="text" class="form-control" id="auteur" name="auteur" formControlName="auteur" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="debut" class="form-label text-primary">Date de cloture</label>
+                                <input type="date" class="form-control" id="debut" name="debut" formControlName="date_limite" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="contenu" class="form-label text-primary">Contenu</label>
+                        <textarea class="form-control" name="contenu" id="contenu" cols="30" rows="8" formControlName="contenu"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-outline-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
