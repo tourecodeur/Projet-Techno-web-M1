@@ -1,122 +1,181 @@
-<div class="row mt-3">
-    <div class="col-md-3">
-        <div class="card px-4 py-3 shadow border-0 position-relative">
-            <span class="icon-number shadow">
-                <i class="bi bi-folder-fill"></i>
-            </span>
-            <h5 class="text-primary fw-medium">Candidatures</h5>
-            <span class="spanNumb">
-                {{tabCandidatures.length}}
-            </span>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card px-4 py-3 shadow border-0 position-relative">
-            <span class="icon-number shadow">
-                <i class="bi bi-megaphone"></i>
-            </span>
-            <h5 class="text-primary fw-medium">Annonces</h5>
-            <span class="spanNumb">
-                {{tabAnnonces.length}}
-            </span>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card px-4 py-3 shadow border-0 position-relative">
-            <span class="icon-number shadow">
-                <i class="pi pi-users"></i>
-            </span>
-            <h5 class="text-primary fw-medium">Candidats</h5>
-            <span class="spanNumb">
-                {{tabCandidats.length}}
-            </span>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card px-4 py-3 shadow border-0 position-relative">
-            <span class="icon-number shadow">
-                <i class="bi bi-files"></i>
-            </span>
-            <h5 class="text-primary fw-medium">Mes documents</h5>
-            <span class="spanNumb">
-                {{documentsFiltered.length}}
-            </span>
-        </div>
-    </div>
-</div>
+<div class="container mt-4 mb-5">
+    <h1 class="fw-bold mb-4">Mes cours</h1>
 
-<div class="row mt-4">
-    <div class="col-md-8">
-        <div class="card px-4 py-3 shadow border-0">
-            <div class="d-flex justify-content-between align-items-center my-4">
-                <p class="fw-medium text-primary">Liste candidatures</p>
-                <input type="text" class="form-control w-50" placeholder="Rechercher une candidature" (input)="searchCandidature($event)">
+    <div class="card p-4 mb-4">
+        <h5 class="mb-4">Vue d'ensemble des cours</h5>
+
+        <div class="d-flex gap-2 mb-4">
+            <div class="dropdown">
+                <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    id="filterDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    Tout
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                    <li><a class="dropdown-item" href="#">Tout</a></li>
+                    <li>
+                        <a class="dropdown-item" href="#">En cours</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Terminés</a>
+                    </li>
+                </ul>
             </div>
 
-            @if (getPaginatedCandidature().length) {
-                <table class="table table-striped mt-2">
-                    <thead class="">
-                        <tr>
-                            <th class="text-primary">Prénom</th>
-                            <th class="text-primary">Nom</th>
-                            <th class="text-primary">Annonce</th>
-                            <th class="text-primary">Structure</th>
-                            <th class="text-primary">Etat</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let candidature of getPaginatedCandidature()">
-                            <td>{{ candidature?.user?.prenom }}</td>
-                            <td>{{ candidature?.user?.nom }}</td>
-                            <td>{{ candidature?.annonce?.titre }}</td>
-                            <td>{{ candidature?.annonce?.auteur }}</td>
-                            <td class="text-white" [ngClass]="{
-                                'bg-warning': candidature?.etat === 'PENDING',
-                                'bg-danger': candidature?.etat === 'REJECTED',
-                                'bg-secondary': candidature?.etat === 'CANCELLED',
-                                'bg-primary': candidature?.etat === 'HIRED'
-                              }">
-                                {{
-                                    candidature?.etat === 'PENDING' ? 'En cours' :
-                                    candidature?.etat === 'REJECTED' ? 'Rejetée' :
-                                    candidature?.etat === 'CANCELLED' ? 'Annulée' :
-                                    candidature?.etat === 'HIRED' ? 'Recruté(e)' :
-                                    candidature?.etat
-                                }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="flex-grow-1">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Rechercher"
+                />
+            </div>
 
-                <!-- Pagination -->
-                <div class="d-flex justify-content-center">
-                    <nav>
-                        <ul class="pagination">
-                            <li class="page-item" [ngClass]="{'disabled': currentPage === 1}">
-                                <a class="page-link" (click)="setPage(currentPage - 1)">&laquo;</a>
-                            </li>
-                            <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [ngClass]="{'active': currentPage === (i + 1)}">
-                                <a class="page-link" (click)="setPage(i + 1)">{{ i + 1 }}</a>
-                            </li>
-                            <li class="page-item" [ngClass]="{'disabled': currentPage === totalPages}">
-                                <a class="page-link" (click)="setPage(currentPage + 1)">&raquo;</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            }@else {
-                <p class="text-center text-primary my-4">
-                    Aucun administrateur disponible
-                </p>
-            }
-            
+            <div class="dropdown">
+                <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    id="sortDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    Trier par nom de cours
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                    <li>
+                        <a class="dropdown-item" href="#">Nom de cours</a>
+                    </li>
+                    <li><a class="dropdown-item" href="#">Date</a></li>
+                    <li>
+                        <a class="dropdown-item" href="#">Popularité</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown">
+                <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    id="viewDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    Carte
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="viewDropdown">
+                    <li><a class="dropdown-item" href="#">Carte</a></li>
+                    <li><a class="dropdown-item" href="#">Liste</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card border-0 shadow p-3 h-100">
-            <h5 class="text-primary fw-medium mb-3">État des candidatures</h5>
-            <div class="chart-container w-100" style="position: relative; height:49vh; margin: 0 auto;">
-                <canvas id="candidatureChart"></canvas>
+
+        <div class="row g-4">
+            <!-- Carte 1 -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <div class="position-relative">
+                        <img
+                            src="/assets/images/algo.jfif"
+                            class="card-img-top"
+                            alt="Algorithmes avancés"
+                            style="
+                                filter: brightness(0.8);
+                                height: 150px;
+                                object-fit: cover;
+                            "
+                        />
+                        <span
+                            class="position-absolute top-0 start-0 m-2 badge bg-primary"
+                            >Algorithmique et Logiciel</span
+                        >
+                        <div
+                            class="position-absolute bottom-0 end-0 m-2 bg-light rounded-circle p-2"
+                        >
+                            <i class="bi bi-lightbulb text-warning"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Algorithmes avancés</h5>
+                        <div class="text-end">
+                            <button class="btn btn-sm text-primary">
+                                <i class="bi bi-circle-info"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 2 -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <div class="position-relative">
+                        <img
+                            src="/assets/images/si.jfif"
+                            class="card-img-top"
+                            alt="Algorithmes distribués"
+                            style="
+                                filter: brightness(0.8);
+                                height: 150px;
+                                object-fit: cover;
+                            "
+                        />
+                        <span
+                            class="position-absolute top-0 start-0 m-2 badge bg-primary"
+                            >Architecture logicielle</span
+                        >
+                        <div
+                            class="position-absolute bottom-0 end-0 m-2 bg-light rounded-circle p-2"
+                        >
+                            <i class="bi bi-lightbulb text-warning"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Algorithmes distribués</h5>
+                        <div class="text-end">
+                            <button class="btn btn-sm text-primary">
+                                <i class="bi bi-circle-info"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 3 -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <div class="position-relative">
+                        <img
+                            src="/assets/images/anglais.png"
+                            class="card-img-top"
+                            alt="ANGLAIS"
+                            style="
+                                filter: brightness(0.8);
+                                height: 150px;
+                                object-fit: cover;
+                            "
+                        />
+                        <span
+                            class="position-absolute top-0 start-0 m-2 badge bg-primary"
+                            >Ouverture et Professionnalisation</span
+                        >
+                        <div
+                            class="position-absolute bottom-0 end-0 m-2 bg-light rounded-circle p-2"
+                        >
+                            <i class="bi bi-lightbulb text-warning"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">ANGLAIS</h5>
+                        <div class="text-end">
+                            <button class="btn btn-sm text-primary">
+                                <i class="bi bi-circle-info"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
